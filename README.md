@@ -31,7 +31,6 @@ Por último especificamos los datos de los integrantes del grupo (nombre, apelli
 - Yanina Roldan, DNI: 33602217
 - Clarisa Negro, DNI: 37522352
 - Agostina Fontana, DNI: 33382658
-- Maria Jose Garcia, DNI: 29757730 
 - Alvarado Karen Edith Natalí, DNI: 36756957
 
 
