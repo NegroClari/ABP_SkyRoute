@@ -1,4 +1,4 @@
-# ABP_SkyRoute
+# ABP_SkyRoute S.R.L.
 En este repositorio se encuentra el ABP del Modulo Programador de la Tecnicatura de Ciencia de Datos e Inteligencia Artificial.
 
 El propósito de este sistema consiste en crear una aplicación de escritorio usando el lenguaje de programación Python que simule el funcionamiento de un sistema básico de gestión de venta de pasajes aéreos.
