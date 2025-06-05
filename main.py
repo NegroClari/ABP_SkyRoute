@@ -114,44 +114,62 @@ def buscar_cliente_por_id_o_cuit(identificador_busqueda):  #Encuentra un cliente
     # 3. Si no se encontró ni por ID ni por CUIT, retornar None
     return None
 
-def modificar_cliente_existente():  #Permite actualizar los datos de un cliente existente.
-    print("\n--- Modificar Cliente ---")
-    if not clientes_registrados:   #verifica si la lista esta vacia
+def modificar_cliente_existente(): #Permite actualizar los datos de un cliente existente.
+    print("\n--- Modificar Cliente ---")  
+    if not clientes_registrados:  #verifica si la lista esta vacia
         print("No hay clientes para modificar. Agregue uno primero.")
-        pausa_sistema()      #llamo la funcion para que regrese al menu anterior
-        return
+        pausa_sistema()   #llamo la funcion para que regrese al menu anterior
+        return 
 
     identificador_cliente = input("Ingrese el ID o CUIT del cliente a modificar: ")  #ingreso de datos por teclado del cliente que quiero modificar
     cliente_encontrado = buscar_cliente_por_id_o_cuit(identificador_cliente) #una vez ingresado lo envio a la funcion buscar cliente. La cual me
-                                                                                #devuelve los datos del cliente. Guardo los datos en cliente encontrado
+                                                                            #devuelve los datos del cliente. Guardo los datos en cliente encontrado
 
-    if cliente_encontrado:
+    if cliente_encontrado: #si lo encuentra muestra sus datos en cada posicion de la lista clientes registrados
         print(f"\nDatos actuales del cliente (ID: {cliente_encontrado['id_cliente']}):")
         print(f"Razón Social: {cliente_encontrado['razonsocial_cliente']}")
         print(f"CUIT: {cliente_encontrado['cuit_cliente']}")
         print(f"Correo: {cliente_encontrado['correo_cliente']}")
-
+ #ingresar por teclado los nuevos datos de la modificacion. a cada dato lo indico en la posicion de la lista y con el diccionario que corresponde
         print("\nIngrese los nuevos datos (deje en blanco para mantener el actual):")
         nueva_razonsocial_input = input(f"Nueva Razón Social ({cliente_encontrado['razonsocial_cliente']}): ")
         nuevo_cuit_input = input(f"Nuevo CUIT ({cliente_encontrado['cuit_cliente']}): ")
         nuevo_correo_input = input(f"Nuevo Correo ({cliente_encontrado['correo_cliente']}): ")
-
+#Si valida nuevo ingreso lo reemplaza en la posicion del cliente que queremos
         if nueva_razonsocial_input:
             cliente_encontrado['razonsocial_cliente'] = nueva_razonsocial_input
+        
+        # Validar y actualizar CUIT
         if nuevo_cuit_input:
-            # Validar que el nuevo CUIT no esté ya en uso por otro cliente
-            if any(c['cuit_cliente'] == nuevo_cuit_input and c['id_cliente'] != cliente_encontrado['id_cliente'] for c in clientes_registrados):
+            cuit_duplicado = False  #creo esta variable booleana para ccambiarla si el cuit ya existe
+# Recorrer todos los clientes registrados de la lista para verificar si el CUIT es el mismo y si no es el cliente que estamos modificando
+            for cliente_existente in clientes_registrados: 
+                if cliente_existente['cuit_cliente'] == nuevo_cuit_input and \
+                   cliente_existente['id_cliente'] != cliente_encontrado['id_cliente']:    # Esta condición verifica si el CUIT del cliente 
+                                                                                            #que estamos revisando en esta iteración 
+                                                                                            #(cliente_existente['cuit_cliente']) es igual 
+                                                                                            # al nuevo CUIT que el usuario quiere asignar un (nuevo_cuit_input). y 
+                                                                                            # verifica que un CUIT duplicado si lo encuentro en un cliente
+                                                                                            #  diferente al que estoy intentando modificar ahora
+                    cuit_duplicado = True  #si se cumplen las condiciones se cambia el valor de la variable booleana y sale
+                    break
+
+            if cuit_duplicado: #si cuit duplicado es TRUE
                 print("Error: El nuevo CUIT ya pertenece a otro cliente y no se puede usar. El CUIT actual se mantuvo.")
             else:
-                cliente_encontrado['cuit_cliente'] = nuevo_cuit_input
+                cliente_encontrado['cuit_cliente'] = nuevo_cuit_input  #Si sigue siendo False le da el valor del nuevo cuit ingresado
+                                                                        #a la lista en la posicion corespondiente
+        
+        # Actualizar correo
         if nuevo_correo_input:
             cliente_encontrado['correo_cliente'] = nuevo_correo_input
-        
+           
         print(f"Cliente (ID: {cliente_encontrado['id_cliente']}) modificado exitosamente.")
-    else:
+     
+    else: #si no encuentra el cliente que queremos modificar
         print("Cliente no encontrado.")
-    pausa_sistema()
-
+    
+    pausa_sistema() # La pausa siempre va al final, sin importar el resultado
 def eliminar_cliente_existente():
     """Elimina un cliente del sistema."""
     print("\n--- Eliminar Cliente ---")
