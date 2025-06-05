@@ -1,5 +1,3 @@
-#PROYECTO SIN MODODULARIZAR
-
 import datetime
 
 # Usaremos listas para almacenar múltiples clientes, reservas y ventas.
@@ -179,8 +177,8 @@ def submenu_gestionar_clientes():      # Maneja las opciones dentro del menú de
         print("4. Eliminar Cliente")
         print("5. Volver al Menú Principal")
         print("----------------------------------------------------------")
-        opcion_clientes_elegida = input("Ingrese una opción: ") # Capturamos la opción aquí mismo
-
+        opcion_clientes_elegida = input("Ingrese una opción: ") #ingresa la opcion por teclado
+    #dependiendo que opcion ingresa se ejecuta la funcion de cada opcion del menu
         if opcion_clientes_elegida == '1':
             ver_clientes_registrados()
         elif opcion_clientes_elegida == '2':
@@ -191,29 +189,29 @@ def submenu_gestionar_clientes():      # Maneja las opciones dentro del menú de
             eliminar_cliente_existente()
         elif opcion_clientes_elegida == '5':
             print("Volviendo al Menú Principal...")
-            break
+            break        #sale del sub menu
         else:
             print("Opción no válida. Intente de nuevo.")
             pausa_sistema()
 
-# --- Módulo de Gestión de Destinos y Reservas ---
+# --- Gestión de Destinos y Reservas ---
 
-def gestionar_destinos_y_reservas(): 
-    global id_reserva
+def gestionar_destinos_y_reservas():  #funcion para ingresar el destino, toma datos del diccionario de destinos 
+    global id_reserva       #llamo la variable contador del id reserva definida al comienzo para incrementarla aca.
     print("\n--- Gestionar Destinos ---")
     print("Listado de destinos disponibles:")
-    for sigla, info_destino in destinos_disponibles.items():
-        print(f"°{sigla} ({info_destino['nombre']}) - ${info_destino['precio']:,.2f} ARS")
-
+    for sigla, info_destino in destinos_disponibles.items():  #recorre el diccionario la sigla y su correspondiente destino en el diccionario
+        print(f"°{sigla} ({info_destino['nombre']}) - ${info_destino['precio']} ARS") # lo imprime
+    #ingresa por teclado las siglas del destino que quiere reservar. Lo pongo con mayusculas para que convierta lo que ingrese a mayusc
     destino_seleccionado_sigla = input("Ingrese siglas del destino a consultar precio (o 'SALIR' para volver): ").upper()
 
     if destino_seleccionado_sigla == 'SALIR':
-        return
+        return #salgo al menu principal
 
-    if destino_seleccionado_sigla in destinos_disponibles:
-        info_destino_elegido = destinos_disponibles[destino_seleccionado_sigla]
-        preciovuelo_elegido = info_destino_elegido['precio']
-        print(f"El costo de su viaje a {info_destino_elegido['nombre']} es de ${preciovuelo_elegido:,.2f} ARS")
+    if destino_seleccionado_sigla in destinos_disponibles:  #verifico que la sigla ingresada este en mi diccionario 
+        info_destino_elegido = destinos_disponibles[destino_seleccionado_sigla]  #guardo en esta variable los datos tipo lista del destino que selecciono
+        preciovuelo_elegido = info_destino_elegido['precio']  #en esta variable guardo el valor del precio que busco en la lista de info anterior
+        print(f"El costo de su viaje a {info_destino_elegido['nombre']} es de ${preciovuelo_elegido} ARS")
 
         confirmacion_reserva = input("Ingrese Y para confirmar el boleto, ingrese N para cancelar la operación: ").upper()
         if confirmacion_reserva == 'Y':
@@ -513,6 +511,10 @@ def main():
         else:
             print("Opción no válida. Intente de nuevo.")
             pausa_sistema()
+
+# Punto de entrada del programa
+if __name__ == "__main__":
+    main()
 
 # Punto de entrada del programa
 if __name__ == "__main__":
