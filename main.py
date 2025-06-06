@@ -330,11 +330,14 @@ def procesar_reserva_pendiente():# Permite al usuario consultar destinos y crear
     print(f"Destino: {reserva_a_procesar['destino_nombre']}")
     print(f"Fecha de Ida: {reserva_a_procesar['fecha_ida']}")
     print(f"Precio: ${reserva_a_procesar['preciovuelo']:,.2f} ARS")
-
-    confirmacion_venta = input("\n¿Confirmar la venta de esta reserva? (S/N): ").upper()
+#Guardo en este variable el ingreso por teclado de la confirmacion
+    confirmacion_venta = input("\n¿Confirmar la venta de esta reserva? (S/N): ").upper() 
+#si es S guardo la info del cliente 
     if confirmacion_venta == 'S':
+#Llamo a la funcion que aumenta el ID para que le asigne uno al nuevo registro id_pasaje del diccionario dentro de la lista ventas finalizadas
+#y guardo el valor en id_venta
         id_venta = obtener_siguiente_id(ventas_finalizadas, 'id_pasaje')
-        
+#creacion del diccionario que contiene la informacion de cada venta      
         venta_registrada_data = {
             'id_pasaje': id_venta,
             'id_cliente_asociado': cliente_para_venta['id_cliente'],
@@ -346,10 +349,12 @@ def procesar_reserva_pendiente():# Permite al usuario consultar destinos y crear
             'fecha_venta': datetime.date.today().strftime("%d-%m-%Y"),
             'fecha_vuelo': reserva_a_procesar['fecha_ida']
         }
+#Agrego los datos del diccionario a la lista ventas_finalizadas
         ventas_finalizadas.append(venta_registrada_data)
 
-        reservas_pendientes.pop(idx_reserva_elegida)
-
+        reservas_pendientes.pop(idx_reserva_elegida) #POP metodo de las listas de Python.Para eliminar un elemento de la lista reservas pendientes.
+                                                    #borra el id pendiente de reserva ya que se confirmo la venta
+#imprimo los datos del diccionario con los datos de la venta
         print("\n--- ¡Venta de Reserva Procesada con Éxito! ---")
         print(f"ID de Venta: {venta_registrada_data['id_pasaje']}")
         print(f"Cliente: {venta_registrada_data['razonsocial_cliente']}")
@@ -359,38 +364,50 @@ def procesar_reserva_pendiente():# Permite al usuario consultar destinos y crear
         print(f"Fecha de Vuelo: {venta_registrada_data['fecha_vuelo']}")
         print(f"Se enviará a su correo: {venta_registrada_data['correo_cliente']} el cupón de pago e indicaciones para finalizar la venta.")
     else:
+#si no ingresa S para confirmar la venta
         print("Procesamiento de reserva cancelado.")
-    pausa_sistema()
+    pausa_sistema() # Pausamos para que el usuario pueda leer el error.
 
-def cancelar_reserva_pendiente():
-    """Permite al usuario cancelar una reserva que aún no ha sido vendida."""
+def cancelar_reserva_pendiente():  #Funcion para cancelar una reserva que todavia no ha sido vendida 
     print("\n--- Cancelar Reserva Pendiente ---")
-    if not reservas_pendientes:
+    if not reservas_pendientes: #Si la lista esta vacia
         print("No hay ninguna reserva pendiente para cancelar.")
-        pausa_sistema()
+        pausa_sistema() #pausa para leer error y salir 
         return
-
+#utilizo un ciclo
     print("\nReservas Pendientes:")
-    for i, reserva in enumerate(reservas_pendientes):
-        cliente_info_reserva = "Sin cliente asociado"
-        if reserva['id_cliente_asociado']:
-            cliente_relacionado = buscar_cliente_por_id_o_cuit(str(reserva['id_cliente_asociado']))
+    for i, reserva in enumerate(reservas_pendientes):     #recorro la lista usando enumerate() es una función incorporada de Python.
+                                                        #produce pares de datos: (índice, valor) i: recibe el índice,
+                                                        # reserva: recibe el valor del elemento de la lista en esa posición. 
+                                                        #en este caso, reserva es el diccionario completo de una de las reservas pendientes.
+#se repite el mismo codigo que al buscar una reserva para luego venderla       
+        cliente_info_reserva = "Sin cliente asociado"  
+ 
+        if reserva['id_cliente_asociado']:  #verifica si el valor, que estamos recorriendo en la lista, de id_cliente_asociado existe 
+            cliente_relacionado = buscar_cliente_por_id_o_cuit(str(reserva['id_cliente_asociado'])) #Llamo y guardo en la variable cliente relacionado
+                                                                                                    #la funcion que pide ingresar un ID o cuit
+                                                                                                    #y nos devuelve la info de ese cliente
+#si se registro algo en la variable cambio el valor de cliente_info_reserva antes definida como "sin cliente asociado"
             if cliente_relacionado:
                 cliente_info_reserva = f"Cliente: {cliente_relacionado['razonsocial_cliente']}"
+#imprime los recorridos del ciclo for de reservas pendientes
         print(f"{i+1}. ID Reserva: {reserva['id_reserva']}, Destino: {reserva['destino_nombre']}, Fecha Ida: {reserva['fecha_ida']}, Precio: ${reserva['preciovuelo']:,.2f} ARS. {cliente_info_reserva}")
 
-    try:
-        idx_reserva_cancelar = int(input("Ingrese el NÚMERO de la reserva a cancelar: ")) - 1
-        if not (0 <= idx_reserva_cancelar < len(reservas_pendientes)):
-            print("Número de reserva inválido.")
-            pausa_sistema()
-            return
-    except ValueError:
+    try: 
+        idx_reserva_cancelar = int(input("Ingrese el NÚMERO de la reserva a cancelar: ")) - 1 #Pide al usuario que ingrese un número usamos int() para convertirlo a un número entero.
+        # Le restamos 1, porque si el usuario ve "1." y lo elige, en la lista es el índice 0.
+        # Entonces, si ingresa 1, lo convertimos a 0. Si ingresa 2, lo convertimos a 1, y así.
+        if not (0 <= idx_reserva_cancelar < len(reservas_pendientes)): #verifico que este en el numero este en el rango de valores que existen en la lista 
+            print("Número de reserva inválido.")  #si no esta imprime este mensaje
+            pausa_sistema() #pausa para leer el error
+            return  #sale para que ingrese otro
+    except ValueError:  #si no ingresa un valor numerico
         print("Entrada inválida. Por favor, ingrese un número.")
-        pausa_sistema()
-        return
+        pausa_sistema() #pausa para leer el error
+        return  #sale para que ingrese otro
 
-    reserva_a_cancelar = reservas_pendientes[idx_reserva_cancelar]
+    reserva_a_cancelar = reservas_pendientes[idx_reserva_cancelar] #si el ingreso fue correcto no ingresa al if ni al except y guarda
+                                                                    #en la variable reserva cancelar la info de la lista en ese id ingresado
     
     confirmacion_cancelacion = input(f"¿Está seguro de cancelar la reserva ID {reserva_a_cancelar['id_reserva']} para {reserva_a_cancelar['destino_nombre']} ({reserva_a_cancelar['fecha_ida']})? (S/N): ").upper()
     if confirmacion_cancelacion == 'S':
