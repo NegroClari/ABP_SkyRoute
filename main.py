@@ -52,7 +52,7 @@ def obtener_siguiente_id(lista_registros, clave_id): #Esta funcion es llamada en
     # Cambio el contador al siguiente ID disponible es el 'id_mas_alto_encontrado' más 1.
     return id_mas_alto_encontrado + 1
 
-def pausa_sistema(): #Detiene la ejecución hasta que el usuario presione Enter
+def pausa_sistema(): #Pausamos para que el usuario pueda leer
     input("\nPresione Enter para continuar...")
 
 def mostrar_menu_generico(titulo_menu, opciones_menu):
@@ -76,7 +76,7 @@ def ver_clientes_registrados(): #Listado de los cliente registrados
         print("Listado de Clientes:")
         for cliente in clientes_registrados:   #recorro la lista elemento por elemento y lo imprimo
             print(f"ID: {cliente['id_cliente']}, Razón Social: {cliente['razonsocial_cliente']}, CUIT: {cliente['cuit_cliente']}, Correo: {cliente['correo_cliente']}")
-    pausa_sistema()
+    pausa_sistema() #Pausamos para que el usuario pueda leer
 
 def agregar_nuevo_cliente():   #Agrego un cliente a la lista clientes_registrados.
     global id_cliente          #llamo a mi variable contador de id nombrada al principio del programa pq aqui se va a incrementar
@@ -90,7 +90,7 @@ def agregar_nuevo_cliente():   #Agrego un cliente a la lista clientes_registrado
     else:
         if any(cuit['cuit_cliente'] == cuit_cliente for cuit in clientes_registrados):
             print("Error: Ya existe un cliente con el CUIT ingresado.")
-            pausa_sistema()
+            pausa_sistema() #Pausamos para que el usuario pueda leer
             return
 
         id_cliente = obtener_siguiente_id(clientes_registrados, 'id_cliente')
@@ -102,7 +102,7 @@ def agregar_nuevo_cliente():   #Agrego un cliente a la lista clientes_registrado
         }
         clientes_registrados.append(nuevo_cliente)
         print(f"Cliente '{razonsocial_cliente}' (ID: {id_cliente}) agregado exitosamente.")
-    pausa_sistema()
+    pausa_sistema() #Pausamos para que el usuario pueda leer
 
 def buscar_cliente_por_id_o_cuit(identificador_busqueda):
     """
@@ -123,7 +123,7 @@ def modificar_cliente_existente(): #  Permite actualizar los datos de un cliente
     print("\n--- Modificar Cliente ---")
     if not clientes_registrados:
         print("No hay clientes para modificar. Agregue uno primero.")
-        pausa_sistema()
+        pausa_sistema() #Pausamos para que el usuario pueda leer
         return
 
     identificador_cliente = input("Ingrese el ID o CUIT del cliente a modificar: ")
@@ -153,13 +153,13 @@ def modificar_cliente_existente(): #  Permite actualizar los datos de un cliente
         print(f"Cliente (ID: {cliente_encontrado['id_cliente']}) modificado exitosamente.")
     else:
         print("Cliente no encontrado.")
-    pausa_sistema()
+    pausa_sistema() #Pausamos para que el usuario pueda leer
 
 def eliminar_cliente_existente(): # elimina un cliente del sistema
     print("\n--- Eliminar Cliente ---")
     if not clientes_registrados:
         print("No hay cliente para eliminar.")
-        pausa_sistema()
+        pausa_sistema() #Pausamos para que el usuario pueda leer
         return
 
     identificador_cliente = input("Ingrese el ID o CUIT del cliente a eliminar: ")
@@ -174,7 +174,7 @@ def eliminar_cliente_existente(): # elimina un cliente del sistema
             print("Operación cancelada.")
     else:
         print("Cliente no encontrado.")
-    pausa_sistema()
+    pausa_sistema() #Pausamos para que el usuario pueda leer
 def submenu_gestionar_clientes(): #Maneja las opciones dentro del menú de Gestión de Clientes.
     while True:
         opciones_clientes = [   #opciones disponibles en una lista
@@ -201,7 +201,7 @@ def submenu_gestionar_clientes(): #Maneja las opciones dentro del menú de Gesti
             break
         else:
             print("Opción no válida. Intente de nuevo.")
-            pausa_sistema()
+            pausa_sistema() #Pausamos para que el usuario pueda leer
 # --- Gestión de Destinos y Reservas ---
 
 def gestionar_destinos_y_reservas():  #funcion para ingresar el destino, toma datos del diccionario de destinos 
@@ -266,7 +266,7 @@ def gestionar_destinos_y_reservas():  #funcion para ingresar el destino, toma da
 #si no ingresa bien las siglas del destino
     else:
         print("Destino no reconocido o no disponible.")
-    pausa_sistema()  #llamo a la funcion y con enter vuelvo al menu principal
+    pausa_sistema()  #Pausamos para que el usuario pueda leer
 
 # --- Módulo de Gestión de Ventas ---
 
@@ -276,7 +276,7 @@ def procesar_reserva_pendiente():# Permite al usuario consultar destinos y crear
     if not reservas_pendientes:   #si no hay reservas en la lista 
         print("No hay ninguna reserva pendiente para procesar.")
         print("Por favor, vaya a '2. Gestionar Destinos' para crear una reserva primero.")
-        pausa_sistema()
+        pausa_sistema() #Pausamos para que el usuario pueda leer
         return
 
     print("\nReservas Pendientes:") #Si hay reservas en la lista
@@ -285,62 +285,46 @@ def procesar_reserva_pendiente():# Permite al usuario consultar destinos y crear
                                                         # reserva: recibe el valor del elemento de la lista en esa posición. 
                                                         #en este caso, reserva es el diccionario completo de una de las reservas pendientes.
         cliente_info_reserva = "Sin cliente asociado"
-        if reserva['id_cliente_asociado']:   # busca en la el diccionario de NUEVA RESERVA
-            cliente_relacionado = buscar_cliente_por_id_o_cuit(str(reserva['id_cliente_asociado']))
-            if cliente_relacionado:
+        if reserva['id_cliente_asociado']:   #verifica si el valor de id_cliente_asociado existe 
+            cliente_relacionado = buscar_cliente_por_id_o_cuit(str(reserva['id_cliente_asociado'])) #Llamo y guardo en la variable cliente relacionado
+                                                                                                    #la funcion que pide ingresar un ID o cuit
+                                                                                                    #y nos devuelve la info de ese cliente
+            if cliente_relacionado: # si se registro algo en la variable cambio el valor de cliente_info_reserva antes definida en "sin cleinte asociado"
                 cliente_info_reserva = f"Cliente: {cliente_relacionado['razonsocial_cliente']} (CUIT: {cliente_relacionado['cuit_cliente']})"
-        print(f"{i+1}. ID Reserva: {reserva['id_reserva']}, Destino: {reserva['destino_nombre']}, Fecha Ida: {reserva['fecha_ida']}, Precio: ${reserva['preciovuelo']:,.2f} ARS. {cliente_info_reserva}")
+        #imprime los recorridos del ciclo for de reservas pendientes
+        print(f"{i+1}. ID Reserva: {reserva['id_reserva']}, Destino: {reserva['destino_nombre']}, Fecha Ida: {reserva['fecha_ida']}, Precio: ${reserva['preciovuelo']} ARS. {cliente_info_reserva}")
+        
+    try: # Intenta hacer esto siguiente..
+        idx_reserva_elegida = int(input("Ingrese el NÚMERO de la reserva a procesar: ")) - 1 # Pide al usuario que ingrese un número usamos int() para convertirlo a un número entero.
+        # Le restamos 1, porque si el usuario ve "1." y lo elige, en la lista es el índice 0.
+        # Entonces, si ingresa 1, lo convertimos a 0. Si ingresa 2, lo convertimos a 1, y así.
 
-    try:
-        idx_reserva_elegida = int(input("Ingrese el NÚMERO de la reserva a procesar: ")) - 1
-        if not (0 <= idx_reserva_elegida < len(reservas_pendientes)):
-            print("Número de reserva inválido.")
-            pausa_sistema()
-            return
-    except ValueError:
-        print("Entrada inválida. Por favor, ingrese un número.")
-        pausa_sistema()
-        return
+        if not (0 <= idx_reserva_elegida < len(reservas_pendientes)): #si NO está en el rango, entonces...
+            # len(reservas_pendientes) nos da la cantidad total de reservas en la lista.
+            # Por ejemplo, si hay 3 reservas, len() es 3 los índices válidos irían de 0 a 2 (len - 1).
+            # Esta condición verifica si el número que ingresó el usuario está fuera de ese rango válido (o sea, si es menor a 0 o mayor o igual a la cantidad de reservas).
+            print("Número de reserva inválido.") #mostramos este mensaje de error.
+            pausa_sistema() # Pausamos para que el usuario pueda leer el error.
+            return #salimos de la función, no podemos seguir con la reserva inválida.
 
-    reserva_a_procesar = reservas_pendientes[idx_reserva_elegida]
+    except ValueError: # Si en el bloque 'try' algo salió mal y fue un "ValueError" por ejemplo, si el usuario NO ingresa un número.
+        print("Entrada inválida. Por favor, ingrese un número.") # Mostramos un mensaje para ese error.
+        pausa_sistema() # Pausamos para que el usuario pueda leer el error.
+        return # Y también salimos de la función, porque la entrada no fue válida.
 
-    cliente_para_venta = None
-    if reserva_a_procesar['id_cliente_asociado']:
-        cliente_para_venta = buscar_cliente_por_id_o_cuit(str(reserva_a_procesar['id_cliente_asociado']))
-    
-    if not cliente_para_venta:
-        print("\nEsta reserva no tiene un cliente asociado válido. Debe asociar uno para completar la venta.")
-        if input("¿Desea AGREGAR un nuevo cliente o SELECCIONAR uno existente ahora? (S/N): ").upper() == 'S':
-            while True:
-                print("\n1. Agregar un nuevo cliente")
-                print("2. Seleccionar un cliente existente")
-                sub_opcion_cliente_venta = input("Ingrese su opción: ")
-                if sub_opcion_cliente_venta == '1':
-                    agregar_nuevo_cliente()
-                    if clientes_registrados:
-                        cliente_para_venta = clientes_registrados[-1]
-                        reserva_a_procesar['id_cliente_asociado'] = cliente_para_venta['id_cliente']
-                        print(f"Reserva ahora asociada al nuevo cliente: {cliente_para_venta['razonsocial_cliente']}")
-                    break
-                elif sub_opcion_cliente_venta == '2':
-                    ver_clientes_registrados()
-                    id_o_cuit_cliente_asociar = input("Ingrese ID o CUIT del cliente a asociar: ")
-                    cliente_seleccionado = buscar_cliente_por_id_o_cuit(id_o_cuit_cliente_asociar)
-                    if cliente_seleccionado:
-                        cliente_para_venta = cliente_seleccionado
-                        reserva_a_procesar['id_cliente_asociado'] = cliente_para_venta['id_cliente']
-                        print(f"Reserva ahora asociada al cliente: {cliente_para_venta['razonsocial_cliente']}")
-                        break
-                    else:
-                        print("Cliente no encontrado.")
-                else:
-                    print("Opción no válida.")
+    reserva_a_procesar = reservas_pendientes[idx_reserva_elegida]  # si la entrada estuvo en el rango correcto,
+                                                        #lo busca en la lista de reservas y lo guarda en la variable reserva a procesar
+
+    cliente_para_venta = None #defino esta variable en none para luego cambiarla cuando este lista la venta
+    if reserva_a_procesar['id_cliente_asociado']: # si existe un dato guardado en mi variable anterior
+        cliente_para_venta = buscar_cliente_por_id_o_cuit(str(reserva_a_procesar['id_cliente_asociado'])) #le cambio el valor de None y
+        #guardo en la variable cliente para venta la funcion que devuelve el diccionario completo del cliente si lo encuentra segun el id asociado
         
         if not cliente_para_venta:
             print("No se pudo asociar un cliente a la reserva. Venta cancelada.")
             pausa_sistema()
             return
-
+#muestro todos los datos del cliente de la reserva a procesar
     print(f"\n--- Detalles de la Reserva a Procesar (ID: {reserva_a_procesar['id_reserva']}) ---")
     print(f"Cliente: {cliente_para_venta['razonsocial_cliente']} (CUIT: {cliente_para_venta['cuit_cliente']})")
     print(f"Destino: {reserva_a_procesar['destino_nombre']}")
