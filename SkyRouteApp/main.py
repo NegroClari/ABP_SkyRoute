@@ -6,7 +6,7 @@ from .gestion_pasajes import submenu_gestionar_destinos
 from .gestion_ventas import submenu_gestionar_ventas
 from .botonarrepentimiento import consultar_ventas_finalizadas, boton_arrepentimiento_venta
 from .funcionesutiles import pausa_sistema
-
+from .conexion import conectar_bd
 
 def main():
     
