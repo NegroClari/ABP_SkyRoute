@@ -4,7 +4,7 @@ En este repositorio se encuentra el ABP del Modulo Programador de la Tecnicatura
 El propósito de este sistema consiste en crear una aplicación de escritorio usando el lenguaje de programación Python que simule el funcionamiento de un sistema básico de gestión de venta de pasajes aéreos y esté conectada a una base de datos.
 La aplicación contará con un menú interactivo que permitirá al usuario navegar por las distintas funcionalidades del sistema, tales como el registro de clientes, destinos, ventas, consultas y la implementación del botón de arrepentimiento.
 
-A continuación dejamos los requerimientos agregados al repositorio por cada espacio curricular:
+# A continuación dejamos los requerimientos agregados al repositorio por cada espacio curricular:
 -Introducción a la Programación
   Incorportamos al código main.py: listas, diccionarios, funciones,i mplementación del botón de arrepentimiento para la modularización       del   mismo.
 -Base de Datos
@@ -12,16 +12,21 @@ A continuación dejamos los requerimientos agregados al repositorio por cada esp
 -Ética y Deontología: 
   Incorporamos otro informe donde que respalda al anterior con consignas nuevas a responder sobre la ley de propiedad intelectal, ley de protección de datos, ley de IA de la UE convenio de Budapest y la ley vigente a favor del consumidor que permite a través de la funcionalidad de un “botón de arrepentimiento” se contemple dicha normativa.
 
-Además, el proyecto incluirá:
+# Además, el proyecto incluirá:
 
 -Una carpeta llamada Evidencia 2 que tiene los archivos pedidos para la evidencia pasad: un DER para la materia Base de Datos y un informe para Ética y deontología profesional
 -Una carpeta llamda BaseDeDatos que contiene 2 archivos SQL: uno con la BD y otro con cosultas hechas sobre la BD.
 -Una carpeta llamada SkyRouteApp que contiene el archivo main.py y todos los archivos.py necesarios para la modularización del código:
-  *FALTA LOS NOMBRES DE LOS ARCHIVOS
-  
--Un informe sobre Ética y Deontología, que aborda aspectos legales, responsabilidades y derechos vinculados al desarrollo del sistema y propiedad de los datos.
+  __init__.py
+  botonarrepentimiento.py
+  funcionesutiles.py
+  gestion_clientes.py
+  gestion_pasajes.py
+  gestion_ventas.py
+  gestiondatos.py
+  -Un informe sobre Ética y Deontología, que aborda aspectos legales, responsabilidades y derechos vinculados al desarrollo del sistema y propiedad de los datos.
 
-A continuación indicaremos cómo instalar y ejecutar el programa.
+# A continuación indicaremos cómo instalar y ejecutar el programa.
 *Requisitos
 - Python 3.10 o superior
 - MySQL instalado y en funcionamiento
@@ -60,20 +65,19 @@ Ejecutar el programa con el siguiente comando:
       usuario (por defecto suele ser root)
       contraseña
       nombre de la base de datos
-Asegurate de modificar esos datos según tu entorno antes de ejecutar el programa.
+¡IMPORTANTE! Modificar esos datos según tu entorno antes de ejecutar el programa.
 
 >> Ejecución del programa
 1.Descargar o clonar el repositorio.
 2.Abrir una terminal en la carpeta raíz del proyecto.
 3.Ejecutar el programa: python main.py
 
-Por último especificamos los datos de los integrantes del grupo (nombre, apellido y DNI):
+# Por último especificamos los datos de los integrantes del grupo (nombre, apellido y DNI):
 
 - Lucía Verdú, DNI: 42051559
 - Yanina Roldan, DNI: 33602217
 - Clarisa Negro, DNI: 37522352
 - Agostina Fontana, DNI: 33382658
-- Alvarado Karen Edith Natalí, DNI: 36756957
 
 
 
